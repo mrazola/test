@@ -16,19 +16,17 @@ import com.sun.net.httpserver.HttpServer;
 public class Startup {
 
     public static void main(String[] args) {
-
-        InetSocketAddress listenTo = new InetSocketAddress(8080);
+        
         try {
-            final HttpServer server = HttpServer.create(listenTo, 0);
+            final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
             server.createContext("/", new RequestDispatcher());
             
             // A quick apache benchmark revealed that the default executor for requests (same thread starting the server) was not
             // able to meet high concurrency levels. Using  a separate thread pool improved that.
-            server.setExecutor(Executors.newWorkStealingPool(4));
+            server.setExecutor(Executors.newWorkStealingPool(2));
             server.start();
         } catch (IOException e) {
-            System.err.println("Could not start game scores server");
-            e.printStackTrace();
+            System.err.println("Could not start game scores server: " + e.getMessage());
         }
     }
 
