@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface ScoreService {
 
-    public void insertScore(Integer level, Integer score);
+    public void insertScore(Integer level, Record record);
     
     public List<Record> getHighScoreList(Integer level);
 }

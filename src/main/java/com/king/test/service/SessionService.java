@@ -1,5 +1,7 @@
 package com.king.test.service;
 
+import java.util.Optional;
+
 /**
  * TODO Comment
  *
@@ -12,6 +14,6 @@ public interface SessionService {
      */
     public String login(Integer uid);
     
-    public boolean isSessionActive(String sessionKey);
+    public Optional<Session> getSession(String sessionKey);
     
 }

@@ -3,10 +3,12 @@ package com.king.test.http;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import com.king.test.service.Record;
 import com.king.test.service.ScoreService;
+import com.king.test.service.Session;
 import com.king.test.service.SessionService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -20,9 +22,17 @@ public class RequestDispatcher implements HttpHandler {
     public static final String LOGIN = "login";
     public static final String SCORE = "score";
     public static final String HIGHSCORELIST = "highscorelist";
+    public static final String SESSIONKEY_PARAM = "sessionkey";
     
-    SessionService sessionService;
-    ScoreService scoreService;
+    final SessionService sessionService;
+    final ScoreService scoreService;
+    
+    // This services could be instantiated by the dependency injection framework used, Guice or whatever
+    public RequestDispatcher(SessionService sessionService, ScoreService scoreService) {
+        super();
+        this.sessionService = sessionService;
+        this.scoreService = scoreService;
+    }
     
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -39,18 +49,14 @@ public class RequestDispatcher implements HttpHandler {
                 case SCORE:
                     Integer level = request.getId();
                     Integer score = Integer.valueOf(request.getBody());
-                    scoreService.insertScore(request.getId(), score);
+                    String sessionKey = request.getParams().get(SESSIONKEY_PARAM);
+                    
+                    Session session = sessionService.getSession(sessionKey).orElseThrow(() -> new NoSuchElementException("Session not found"));
+                    scoreService.insertScore(level, new Record(session.getUid(), score));
                     break;
                     
                 case HIGHSCORELIST:
                     List<Record> top = scoreService.getHighScoreList(request.getId());
-//                    StringBuilder builder = new StringBuilder();
-//                    if (!top.isEmpty()) {
-//                        for (Record record : top) {
-//                            builder.append(record.getUid()).append('=').append(record.getScore()).append(',');
-//                        }
-//                        builder.substring(0, builder.length() - 1);
-//                    }
                     // transform to comma separated list
                     result = top.stream().map(r -> r.toString()).collect(Collectors.joining(","));
                     break;
@@ -63,10 +69,13 @@ public class RequestDispatcher implements HttpHandler {
             exchange.sendResponseHeaders(200, result.isEmpty() ? -1 : result.length());
             out.write(result.getBytes());
             
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            String error = "Could not parse request";
-            exchange.sendResponseHeaders(400, error.length());
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            String error = e.getMessage();
+            exchange.sendResponseHeaders(400, error.length()); // 400 - client error
+            out.write(error.getBytes());
+        } catch (Exception e) {
+            String error = e.getMessage();
+            exchange.sendResponseHeaders(500, error.length()); // 500 - server error
             out.write(error.getBytes());
         } finally {
             exchange.close();

@@ -6,6 +6,10 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 import com.king.test.http.RequestDispatcher;
+import com.king.test.service.InMemoryCacheSessionService;
+import com.king.test.service.LinkedListScoreService;
+import com.king.test.service.ScoreService;
+import com.king.test.service.SessionService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
@@ -19,7 +23,10 @@ public class Startup {
         
         try {
             final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-            server.createContext("/", new RequestDispatcher());
+            SessionService sessionService = new InMemoryCacheSessionService();
+            ScoreService scoreService = new LinkedListScoreService();
+            
+            server.createContext("/", new RequestDispatcher(sessionService, scoreService));
             
             // A quick apache benchmark revealed that the default executor for requests (same thread starting the server) was not
             // able to meet high concurrency levels. Using  a separate thread pool improved that.
