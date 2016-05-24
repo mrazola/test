@@ -21,16 +21,28 @@ public class TestRanking {
     
     @Test
     public void quickTest() {
-        Ranking ranking = new Ranking();
+        RankingReversed ranking = new RankingReversed();
         
         ranking.insertScore(new Record(1, 1000));
         ranking.insertScore(new Record(2, 2000));
         ranking.insertScore(new Record(3, 1500));
         ranking.insertScore(new Record(4, 1100));
         ranking.insertScore(new Record(5, 1700));
+        ranking.insertScore(new Record(6, 1300));
+        ranking.insertScore(new Record(5, 1300));
+        ranking.insertScore(new Record(5, 1750));
+        ranking.insertScore(new Record(3, 1800));
         
         System.out.println(ranking.getRank());
         
     }
     
+    
+    @Test
+    public void repeatedPlayerTest() {
+        RankingReversed ranking = new RankingReversed();
+        
+        System.out.println(ranking.getRank());
+        
+    }
 }
