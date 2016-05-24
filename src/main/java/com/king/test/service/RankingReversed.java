@@ -46,6 +46,10 @@ public class RankingReversed {
                     } else {
                         this.insertNewScore(record);
                         members.add(record.getUid());
+                        if (rank.size() > MAX_SIZE) {
+                        	Record removed = rank.removeLast();
+                        	members.remove(removed.getUid());
+                        }
                     }
                     this.minScore = Math.min(this.minScore, record.getScore());
                 }
@@ -90,7 +94,8 @@ public class RankingReversed {
                 inserted = true;
             }
         }
-        if (!inserted) { // we have a new top player... at lowest rank :)
+        
+        if (!inserted && rank.size() < MAX_SIZE) { // we have a new top player... at lowest rank :)
             rank.add(record);
         }
     }
