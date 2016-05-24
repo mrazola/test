@@ -1,10 +1,10 @@
 package com.king.test.service;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 /**
@@ -15,32 +15,19 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class LinkedListScoreService implements ScoreService {
 
-    private final ConcurrentMap<Integer, List<Record>> scoresByLevel;
+    private final ReadWriteLock lock;
+    private final ConcurrentMap<Integer, Ranking> scoresByLevel;
     
     public LinkedListScoreService() {
+        this.lock = new ReentrantReadWriteLock();
         this.scoresByLevel = new ConcurrentHashMap<>();
     }
     
     @Override
     public void insertScore(final Integer level, final Record record) {
-        scoresByLevel.putIfAbsent(level, new LinkedList<>());
-        List<Record> forLevel = scoresByLevel.get(level);
-        synchronized (forLevel) {
-            ListIterator<Record> it = forLevel.listIterator();
-            if (!it.hasNext()) {
-                it.set(record);
-            } else {
-                Record last = it.next();
-                if (last.getScore() < record.getScore()) {
-                    it.remove();
-                    while (it.hasNext()) {
-                        Record current = it.next();
-                        it.
-                        if (current.getScore() < record.getScore()) 
-                    }
-                }
-            }
-        }
+        scoresByLevel.putIfAbsent(level, new Ranking());
+        Ranking forLevel = scoresByLevel.get(level);
+        forLevel.insertScore(record);
     }
 
     @Override
