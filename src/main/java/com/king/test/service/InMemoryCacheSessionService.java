@@ -17,6 +17,8 @@ import java.util.UUID;
  */
 public class InMemoryCacheSessionService implements SessionService {
 
+	private static final int DEFAULT_TTL = 10 * 60 * 1000;
+	
     private static final int INITIAL_CAPACITY = 32;
     private static final float LOAD_FACTOR = 0.75f;
     
@@ -68,7 +70,7 @@ public class InMemoryCacheSessionService implements SessionService {
     @Override
     public String login(Integer uid) {
         // TODO Auto-generated method stub
-        return null;
+        return this.login(uid, DEFAULT_TTL);
     }
 
     public String login(Integer uid, long ttl) {

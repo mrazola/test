@@ -33,7 +33,7 @@ public class LinkedListScoreService implements ScoreService {
     @Override
     public List<Record> getHighScoreList(Integer level) {
         // TODO Auto-generated method stub
-        return null;
+        return scoresByLevel.get(level).getRank();
     }
 
 }
