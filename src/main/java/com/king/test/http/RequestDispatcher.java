@@ -9,13 +9,12 @@ import java.util.stream.Collectors;
 
 import com.king.test.service.ScoreService;
 import com.king.test.service.ranking.Record;
-import com.king.test.service.session.Session;
-import com.king.test.service.session.SessionService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 /**
- * Front controller for http requests.
+ * Front controller for HTTP requests. Transforms client requests into
+ * concrete method calls to {@code ScoreService}
  *
  */
 public class RequestDispatcher implements HttpHandler {

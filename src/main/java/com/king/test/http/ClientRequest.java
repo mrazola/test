@@ -9,7 +9,9 @@ import java.util.Map;
 import com.sun.net.httpserver.HttpExchange;
 
 /**
- * TODO Comment
+ * Abstracts an HTTP request to the score server, mapping the url, request params and body
+ * into desired fields.
+ * Provides a {@code ClientRequestBuilder} to help instantiation.
  *
  */
 public class ClientRequest {

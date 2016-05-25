@@ -12,8 +12,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * TODO Comment
  *
- * @author mrazola
- * @created 23 May 2016
  */
 public class RankingLinkedListImpl implements Ranking {
 
@@ -34,10 +32,7 @@ public class RankingLinkedListImpl implements Ranking {
         this.members = new HashSet<>(maxSize * 2); // to avoid rehashing
         this.rank = new LinkedList<>();
     }
-    
-    /* (non-Javadoc)
-	 * @see com.king.test.service.score.Ranking#insertScore(com.king.test.service.score.Record)
-	 */
+
     @Override
 	public void insertScore(Record record) {
         
@@ -102,17 +97,14 @@ public class RankingLinkedListImpl implements Ranking {
             }
         }
         
-        if (!inserted && rank.size() < maxSize) { // we have a new top player... at lowest rank :)
+        if (!inserted && rank.size() < this.maxSize) { // we have a new top player... at lowest rank :)
             rank.add(record);
         }
     }
-    
-    /* (non-Javadoc)
-	 * @see com.king.test.service.score.Ranking#getRank()
-	 */
+
     @Override
 	public List<Record> getTop() {
-        lock.readLock().lock();
+        lock.readLock().lock(); // only lock for reading here
         try {
             return Collections.unmodifiableList(rank);
         } finally  {
