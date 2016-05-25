@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.king.test.service.score.Record;
@@ -33,39 +34,15 @@ public class RequestDispatcher implements HttpHandler {
         this.sessionService = sessionService;
         this.scoreService = scoreService;
     }
-    
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         OutputStream out = exchange.getResponseBody();
-        String result = "";
         try {
-            ClientRequest request = new ClientRequest(exchange);
+            ClientRequest request = ClientRequest.builder().withHttpExchange(exchange).build();
             
-            switch (request.getAction()) {
-                case LOGIN:
-                    result = sessionService.login(request.getId());
-                    break;
-                    
-                case SCORE:
-                    Integer level = request.getId();
-                    Integer score = Integer.valueOf(request.getBody());
-                    String sessionKey = request.getParams().get(SESSIONKEY_PARAM);
-                    
-                    Session session = sessionService.getSession(sessionKey).orElseThrow(() -> new NoSuchElementException("Session not found"));
-                    scoreService.insertScore(level, new Record(session.getUid(), score));
-                    break;
-                    
-                case HIGHSCORELIST:
-                    List<Record> top = scoreService.getHighScoreList(request.getId());
-                    // transform to comma separated list
-                    result = top.stream().map(r -> r.toString()).collect(Collectors.joining(","));
-                    break;
-                    
-                default:
-                    String error = "No endpoint to handle request";
-                    exchange.sendResponseHeaders(400, error.length());
-                    out.write(error.getBytes());
-            }
+            String result = this.handle(request).orElse("");
+            
             exchange.sendResponseHeaders(200, result.isEmpty() ? -1 : result.length());
             out.write(result.getBytes());
             
@@ -82,4 +59,31 @@ public class RequestDispatcher implements HttpHandler {
         }
     }
 
+    public Optional<String> handle(ClientRequest request) {
+        
+        switch (request.getAction()) {
+            case LOGIN:
+                String result = sessionService.login(request.getId());
+                return Optional.of(result);
+                
+            case SCORE:
+                Integer level = request.getId();
+                Integer score = Integer.valueOf(request.getBody());
+                String sessionKey = request.getParams().get(SESSIONKEY_PARAM);
+                
+                Session session = sessionService.getSession(sessionKey).orElseThrow(() -> new NoSuchElementException("Session not found"));
+                scoreService.insertScore(level, new Record(session.getUid(), score));
+                return Optional.empty();
+                
+            case HIGHSCORELIST:
+                List<Record> top = scoreService.getHighScoreList(request.getId());
+                // transform to comma separated list
+                result = top.stream().map(r -> r.toString()).collect(Collectors.joining(","));
+                return Optional.of(result);
+                
+            default:
+                throw new IllegalArgumentException("No endpoint to handle request");
+        }
+    }
+    
 }
