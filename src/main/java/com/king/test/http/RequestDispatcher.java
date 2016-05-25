@@ -7,8 +7,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.king.test.service.score.Record;
-import com.king.test.service.score.ScoreService;
+import com.king.test.service.ScoreService;
+import com.king.test.service.ranking.Record;
 import com.king.test.service.session.Session;
 import com.king.test.service.session.SessionService;
 import com.sun.net.httpserver.HttpExchange;
@@ -25,12 +25,10 @@ public class RequestDispatcher implements HttpHandler {
     public static final String HIGHSCORELIST = "highscorelist";
     public static final String SESSIONKEY_PARAM = "sessionkey";
     
-    final SessionService sessionService;
     final ScoreService scoreService;
     
-    public RequestDispatcher(SessionService sessionService, ScoreService scoreService) {
+    public RequestDispatcher(ScoreService scoreService) {
         super();
-        this.sessionService = sessionService;
         this.scoreService = scoreService;
     }
 
@@ -38,16 +36,15 @@ public class RequestDispatcher implements HttpHandler {
         
         switch (request.getAction()) {
             case LOGIN:
-                String result = sessionService.login(request.getId());
+                String result = scoreService.login(request.getId());
                 return Optional.of(result);
                 
             case SCORE:
                 Integer level = request.getId();
                 Integer score = Integer.valueOf(request.getBody());
-                String sessionKey = request.getParams().get(SESSIONKEY_PARAM);
+                String sessionkey = request.getParams().get(SESSIONKEY_PARAM);
                 
-                Session session = sessionService.getSession(sessionKey).orElseThrow(() -> new NoSuchElementException("Session not found"));
-                scoreService.insertScore(level, new Record(session.getUid(), score));
+                scoreService.insertScore(level, sessionkey, score);
                 return Optional.empty();
                 
             case HIGHSCORELIST:

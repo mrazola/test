@@ -1,4 +1,4 @@
-package com.king.test.service.score;
+package com.king.test.service.ranking;
 
 /**
  * Entity that holds a user id and her score

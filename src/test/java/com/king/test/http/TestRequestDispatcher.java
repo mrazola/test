@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.king.test.service.score.ScoreServiceMemoryImpl;
+import com.king.test.service.ScoreServiceMemoryImpl;
 import com.king.test.service.session.SessionServiceCacheImpl;
 
 /**
@@ -17,12 +17,11 @@ import com.king.test.service.session.SessionServiceCacheImpl;
  */
 public class TestRequestDispatcher {
 
-	RequestDispatcher realDispatcher;
+	RequestDispatcher dispatcher;
 	
 	@Before
 	public void setUp() {
-		realDispatcher = new RequestDispatcher(new SessionServiceCacheImpl(),
-				new ScoreServiceMemoryImpl());
+		dispatcher = new RequestDispatcher(new ScoreServiceMemoryImpl(new SessionServiceCacheImpl()));
 	}
 	
 	/**
@@ -40,7 +39,7 @@ public class TestRequestDispatcher {
 				.withId(10)
 				.build();
 		
-		String result = realDispatcher.handle(highscore).get();
+		String result = dispatcher.handle(highscore).get();
 		
 		Assert.assertEquals("3=1500,1=1200,2=1100", result);
 	}
@@ -52,7 +51,7 @@ public class TestRequestDispatcher {
 				.withId(12)
 				.build();
 		
-		String resultEmpty = realDispatcher.handle(highscoreEmpty).get();
+		String resultEmpty = dispatcher.handle(highscoreEmpty).get();
 		
 		Assert.assertEquals("", resultEmpty);
 	}
@@ -64,18 +63,18 @@ public class TestRequestDispatcher {
 
 		httpExchange.reset(new URI("http://localhost:8080/fooo"), "");
 
-		realDispatcher.handle(httpExchange);
+		dispatcher.handle(httpExchange);
 		Assert.assertEquals(400, httpExchange.getResponseCode());
 
 		httpExchange.reset(new URI("http://localhost:8080/1/login"), "");
-		realDispatcher.handle(httpExchange);
+		dispatcher.handle(httpExchange);
 		Assert.assertEquals(200, httpExchange.getResponseCode());
 
 	}
 	
 	private void insertScore(Integer uid, Integer level, Integer score) {
 		ClientRequest login = ClientRequest.builder().withAction("login").withId(uid).build();
-		String sessionkey = realDispatcher.handle(login).orElseThrow(() -> new IllegalStateException("Login failed"));
+		String sessionkey = dispatcher.handle(login).orElseThrow(() -> new IllegalStateException("Login failed"));
 
 		ClientRequest scoreRequest = ClientRequest.builder()
 				.withAction("score")
@@ -84,6 +83,6 @@ public class TestRequestDispatcher {
 				.withBody(score.toString())
 				.build();
 
-		realDispatcher.handle(scoreRequest);
+		dispatcher.handle(scoreRequest);
 	}
 }

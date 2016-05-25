@@ -1,10 +1,14 @@
-package com.king.test.service.score;
+package com.king.test.service.ranking;
 
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.king.test.service.ranking.Ranking;
+import com.king.test.service.ranking.RankingLinkedListImpl;
+import com.king.test.service.ranking.Record;
 
 /**
  * Unit tests for {@code Ranking}

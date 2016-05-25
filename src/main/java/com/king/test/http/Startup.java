@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import com.king.test.service.score.ScoreService;
-import com.king.test.service.score.ScoreServiceMemoryImpl;
+import com.king.test.service.ScoreService;
+import com.king.test.service.ScoreServiceMemoryImpl;
 import com.king.test.service.session.SessionServiceCacheImpl;
 import com.king.test.service.session.SessionService;
 import com.sun.net.httpserver.HttpServer;
@@ -23,8 +23,8 @@ public class Startup {
             
             // This services could be instantiated by the dependency injection framework used, Guice or whatever
             SessionService sessionService = new SessionServiceCacheImpl();
-            ScoreService scoreService = new ScoreServiceMemoryImpl();
-            RequestDispatcher dispatcher = new RequestDispatcher(sessionService, scoreService);
+            ScoreService scoreService = new ScoreServiceMemoryImpl(sessionService);
+            RequestDispatcher dispatcher = new RequestDispatcher(scoreService);
             
             server.createContext("/", dispatcher);
             

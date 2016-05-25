@@ -1,4 +1,4 @@
-package com.king.test.service.score;
+package com.king.test.service.ranking;
 
 import java.util.Collections;
 import java.util.HashSet;
