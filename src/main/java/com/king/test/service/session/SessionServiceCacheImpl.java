@@ -56,7 +56,7 @@ public class SessionServiceCacheImpl implements SessionService {
     }
     
     @Override
-    public Optional<Session> getSession(String sessionKey) {
+    public Optional<Integer> getSession(String sessionKey) {
         Session session = this.cache.get(sessionKey);
         if (session == null) {
             return Optional.empty();
@@ -64,7 +64,7 @@ public class SessionServiceCacheImpl implements SessionService {
             this.cache.remove(sessionKey); // if already expired, free cache
             return Optional.empty();
         } else {
-            return Optional.of(session);
+            return Optional.of(session.getUid());
         }
     }
 

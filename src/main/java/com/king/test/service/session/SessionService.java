@@ -19,6 +19,6 @@ public interface SessionService {
      * @param sessionKey
      * @return a valid {@code Session} if still active, or empty if not
      */
-    public Optional<Session> getSession(String sessionKey);
+    public Optional<Integer> getSession(String sessionKey);
     
 }

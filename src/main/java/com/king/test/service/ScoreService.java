@@ -5,7 +5,7 @@ import java.util.List;
 import com.king.test.service.ranking.Record;
 
 /**
- * TODO Comment
+ * Main facade for all the features needed by the test.
  *
  */
 public interface ScoreService {

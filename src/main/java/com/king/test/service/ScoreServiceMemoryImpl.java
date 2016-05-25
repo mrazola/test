@@ -37,8 +37,8 @@ public class ScoreServiceMemoryImpl implements ScoreService {
     @Override
     public void insertScore(final Integer level, String sessionkey, Integer score) throws NoSuchElementException {
         
-    	Session session = sessionService.getSession(sessionkey).orElseThrow(() -> new NoSuchElementException("Session not found"));
-        Record record = new Record(session.getUid(), score);
+    	Integer uid = sessionService.getSession(sessionkey).orElseThrow(() -> new NoSuchElementException("Session not found"));
+        Record record = new Record(uid, score);
         
         Ranking forLevel = null;
         
