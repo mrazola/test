@@ -1,4 +1,4 @@
-package com.king.test.service;
+package com.king.test.service.session;
 
 import java.io.Serializable;
 

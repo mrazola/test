@@ -47,7 +47,6 @@ public class ClientRequest {
             body = result.toString();
             
         } catch (Exception e) {
-            e.printStackTrace();
             throw new IllegalArgumentException("Could not parse client request");
         }
     }

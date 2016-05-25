@@ -6,10 +6,10 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 import com.king.test.http.RequestDispatcher;
-import com.king.test.service.InMemoryCacheSessionService;
-import com.king.test.service.LinkedListScoreService;
-import com.king.test.service.ScoreService;
-import com.king.test.service.SessionService;
+import com.king.test.service.score.ScoreServiceMemoryImpl;
+import com.king.test.service.score.ScoreService;
+import com.king.test.service.session.InMemoryCacheSessionService;
+import com.king.test.service.session.SessionService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
@@ -24,7 +24,7 @@ public class Startup {
         try {
             final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
             SessionService sessionService = new InMemoryCacheSessionService();
-            ScoreService scoreService = new LinkedListScoreService();
+            ScoreService scoreService = new ScoreServiceMemoryImpl();
             
             server.createContext("/", new RequestDispatcher(sessionService, scoreService));
             

@@ -1,4 +1,4 @@
-package com.king.test.service;
+package com.king.test.service.score;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,18 +15,23 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author mrazola
  * @created 23 May 2016
  */
-public class RankingReversed {
+public class RankingLinkedListImpl {
 
-    private static final int MAX_SIZE=15;
+    private static final int DEFAULT_MAX_SIZE = 15;
     
     private final ReadWriteLock lock;
-    private final Set<Integer> members;
+    private final Set<Integer> members; // keeps track of members of the ranking, only to help with having a clearer algorithm
     private final LinkedList<Record> rank;
-    private volatile int minScore = -1;
+    private final int maxSize;
 
-    public RankingReversed() {
+    public RankingLinkedListImpl() {
+        this(DEFAULT_MAX_SIZE);
+    }
+    
+    public RankingLinkedListImpl(int maxSize) {
+        this.maxSize = maxSize;
         this.lock = new ReentrantReadWriteLock();
-        this.members = new HashSet<>(32);
+        this.members = new HashSet<>(maxSize * 2); // to avoid rehashing
         this.rank = new LinkedList<>();
     }
     
@@ -37,21 +42,19 @@ public class RankingReversed {
             if (rank.isEmpty()) {
                 rank.add(record);
                 members.add(record.getUid());
-                this.minScore = record.getScore();
             } else {
-                if (rank.size() < MAX_SIZE || record.getScore() > minScore) {
+                if (rank.size() < maxSize || record.getScore() > rank.getLast().getScore()) {
                     
                     if (members.contains(record.getUid())) {
                         this.updateScore(record);
                     } else {
                         this.insertNewScore(record);
                         members.add(record.getUid());
-                        if (rank.size() > MAX_SIZE) {
+                        if (rank.size() > maxSize) {
                         	Record removed = rank.removeLast();
                         	members.remove(removed.getUid());
                         }
                     }
-                    this.minScore = Math.min(this.minScore, record.getScore());
                 }
             }
         } finally {
@@ -95,7 +98,7 @@ public class RankingReversed {
             }
         }
         
-        if (!inserted && rank.size() < MAX_SIZE) { // we have a new top player... at lowest rank :)
+        if (!inserted && rank.size() < maxSize) { // we have a new top player... at lowest rank :)
             rank.add(record);
         }
     }

@@ -1,4 +1,4 @@
-package com.king.test.service;
+package com.king.test.service.session;
 
 import java.time.Clock;
 import java.util.Collections;
@@ -69,7 +69,6 @@ public class InMemoryCacheSessionService implements SessionService {
     
     @Override
     public String login(Integer uid) {
-        // TODO Auto-generated method stub
         return this.login(uid, DEFAULT_TTL);
     }
 

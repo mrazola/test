@@ -1,7 +1,7 @@
-package com.king.test.service;
+package com.king.test.service.score;
 
 /**
- * TODO Comment
+ * Entity that holds a user id and her score
  *
  */
 public class Record {

@@ -1,4 +1,4 @@
-package com.king.test.service;
+package com.king.test.service.score;
 
 import java.util.List;
 

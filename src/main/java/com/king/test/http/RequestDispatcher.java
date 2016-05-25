@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import com.king.test.service.Record;
-import com.king.test.service.ScoreService;
-import com.king.test.service.Session;
-import com.king.test.service.SessionService;
+import com.king.test.service.score.Record;
+import com.king.test.service.score.ScoreService;
+import com.king.test.service.session.Session;
+import com.king.test.service.session.SessionService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 

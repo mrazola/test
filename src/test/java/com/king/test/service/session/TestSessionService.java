@@ -1,14 +1,12 @@
-package com.king.test.service;
+package com.king.test.service.session;
 
 import org.junit.Test;
 
 /**
- * TODO Comment
+ * Unit tests for {@code SessionService}
  *
- * @author mrazola
- * @created 23 May 2016
  */
-public class SessionServiceTest {
+public class TestSessionService {
     
     @Test
     public void testSessionService() throws InterruptedException {
