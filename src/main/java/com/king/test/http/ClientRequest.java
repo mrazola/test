@@ -58,7 +58,7 @@ public class ClientRequest {
         protected Map<String, String> params;
         protected String body;
 
-        public ClientRequest build() {
+        public ClientRequest build() throws IllegalArgumentException {
             return new ClientRequest(this);
         }
 
