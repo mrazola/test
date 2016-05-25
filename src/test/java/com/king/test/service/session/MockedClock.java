@@ -5,6 +5,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 
+/**
+ * To be used for testing, implements methods to manage time.
+ * 
+ */
 public class MockedClock extends Clock {
 
 	private Clock delegate;
@@ -21,6 +25,11 @@ public class MockedClock extends Clock {
 		this.delegate = delegate;
 	}
 
+	/**
+	 * Speeds up the delegated clock by the supplied offset
+	 * 
+	 * @param offset
+	 */
 	public void speedUpBy(Duration offset) {
 		this.delegate = Clock.offset(delegate, offset);
 	}

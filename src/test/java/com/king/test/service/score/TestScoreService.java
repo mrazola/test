@@ -13,7 +13,7 @@ import org.junit.Test;
 public class TestScoreService {
 
 	ScoreService scoreService;
-	RankingLinkedListImpl ranking;
+	Ranking ranking;
 	
 	@Before
 	public void setUp() {
@@ -83,7 +83,7 @@ public class TestScoreService {
 
     @Test
     public void updatingScoreTest() {
-        RankingLinkedListImpl ranking = new RankingLinkedListImpl();
+        Ranking ranking = new RankingLinkedListImpl();
 
         ranking.insertScore(new Record(1, 1000));
         ranking.insertScore(new Record(2, 2000));
