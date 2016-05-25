@@ -35,7 +35,7 @@ public class ScoreServiceMemoryImpl implements ScoreService {
 
     @Override
     public List<Record> getHighScoreList(Integer level) {
-        return scoresByLevel.get(level).getRank();
+        return scoresByLevel.get(level).getTop();
     }
 
 }

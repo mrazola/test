@@ -13,12 +13,10 @@ import org.junit.Test;
 public class TestScoreService {
 
 	ScoreService scoreService;
-	Ranking ranking;
 	
 	@Before
 	public void setUp() {
 		this.scoreService = new ScoreServiceMemoryImpl();
-		this.ranking = new RankingLinkedListImpl();
 	}
 	
     @Test
@@ -56,47 +54,4 @@ public class TestScoreService {
 
     }
 
-    @Test
-    public void testRankingMaxSize() {
-
-        int size = 3;
-        //RankingLinkedListImpl ranking = new RankingLinkedListImpl(size);
-
-        ranking.insertScore(new Record(1, 1000));
-        ranking.insertScore(new Record(2, 2000));
-        ranking.insertScore(new Record(3, 1500));
-
-        Assert.assertEquals(ranking.getRank().size(), size);
-
-        // insert a record with lower score than current
-        ranking.insertScore(new Record(7, 900));
-        Assert.assertEquals(ranking.getRank().size(), size);
-
-        // insert a record that would replace current lowest
-        ranking.insertScore(new Record(7, 1100));
-        Assert.assertEquals(ranking.getRank().size(), size);
-
-        // insert a record that would replace current highest
-        ranking.insertScore(new Record(7, 3000));
-        Assert.assertEquals(ranking.getRank().size(), size);
-    }
-
-    @Test
-    public void updatingScoreTest() {
-        Ranking ranking = new RankingLinkedListImpl();
-
-        ranking.insertScore(new Record(1, 1000));
-        ranking.insertScore(new Record(2, 2000));
-        ranking.insertScore(new Record(3, 1500));
-        ranking.insertScore(new Record(4, 1100));
-        ranking.insertScore(new Record(5, 1700));
-        ranking.insertScore(new Record(6, 1300));
-        ranking.insertScore(new Record(5, 1300));
-        ranking.insertScore(new Record(5, 1750));
-        ranking.insertScore(new Record(3, 1800));
-
-        Assert.assertEquals(ranking.getRank().size(), 6); // size must still be 6
-        System.out.println(ranking.getRank());
-
-    }
 }

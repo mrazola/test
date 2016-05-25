@@ -51,7 +51,7 @@ public class SessionCache extends LinkedHashMap<String, Session> {
         int i = 0;
         while (it.hasNext() && i < this.cleanupKeys) {
             Entry<String, Session> last = it.next();
-            if (last.getValue().getExpiration() < clock.millis()) {
+            if (last.getValue().getExpiration() <= clock.millis()) {
                 it.remove();
             } else if (this.size() > this.maxCapacity) {
                 return true;

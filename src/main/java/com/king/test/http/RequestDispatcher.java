@@ -28,35 +28,10 @@ public class RequestDispatcher implements HttpHandler {
     final SessionService sessionService;
     final ScoreService scoreService;
     
-    // This services could be instantiated by the dependency injection framework used, Guice or whatever
     public RequestDispatcher(SessionService sessionService, ScoreService scoreService) {
         super();
         this.sessionService = sessionService;
         this.scoreService = scoreService;
-    }
-
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        OutputStream out = exchange.getResponseBody();
-        try {
-            ClientRequest request = ClientRequest.builder().withHttpExchange(exchange).build();
-            
-            String result = this.handle(request).orElse("");
-            
-            exchange.sendResponseHeaders(200, result.isEmpty() ? -1 : result.length());
-            out.write(result.getBytes());
-            
-        } catch (IllegalArgumentException | NoSuchElementException e) {
-            String error = e.getMessage();
-            exchange.sendResponseHeaders(400, error.length()); // 400 - client error
-            out.write(error.getBytes());
-        } catch (Exception e) {
-            String error = e.getMessage();
-            exchange.sendResponseHeaders(500, error.length()); // 500 - server error
-            out.write(error.getBytes());
-        } finally {
-            exchange.close();
-        }
     }
 
     public Optional<String> handle(ClientRequest request) {
@@ -83,6 +58,30 @@ public class RequestDispatcher implements HttpHandler {
                 
             default:
                 throw new IllegalArgumentException("No endpoint to handle request");
+        }
+    }
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        OutputStream out = exchange.getResponseBody();
+        try {
+            ClientRequest request = ClientRequest.builder().withHttpExchange(exchange).build();
+            
+            String result = this.handle(request).orElse("");
+            
+            exchange.sendResponseHeaders(200, result.isEmpty() ? -1 : result.length());
+            out.write(result.getBytes());
+            
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            String error = e.getMessage();
+            exchange.sendResponseHeaders(400, error.length()); // 400 - client error
+            out.write(error.getBytes());
+        } catch (Exception e) {
+            String error = e.getMessage();
+            exchange.sendResponseHeaders(500, error.length()); // 500 - server error
+            out.write(error.getBytes());
+        } finally {
+            exchange.close();
         }
     }
     

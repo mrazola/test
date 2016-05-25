@@ -111,7 +111,7 @@ public class RankingLinkedListImpl implements Ranking {
 	 * @see com.king.test.service.score.Ranking#getRank()
 	 */
     @Override
-	public List<Record> getRank() {
+	public List<Record> getTop() {
         lock.readLock().lock();
         try {
             return Collections.unmodifiableList(rank);

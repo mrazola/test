@@ -20,10 +20,13 @@ public class Startup {
         
         try {
             final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+            
+            // This services could be instantiated by the dependency injection framework used, Guice or whatever
             SessionService sessionService = new SessionServiceCacheImpl();
             ScoreService scoreService = new ScoreServiceMemoryImpl();
+            RequestDispatcher dispatcher = new RequestDispatcher(sessionService, scoreService);
             
-            server.createContext("/", new RequestDispatcher(sessionService, scoreService));
+            server.createContext("/", dispatcher);
             
             // A quick apache benchmark revealed that the default executor for requests (same thread starting the server) was not
             // able to meet high concurrency levels. Using  a separate thread pool improved that.

@@ -6,6 +6,6 @@ public interface Ranking {
 
 	void insertScore(Record record);
 
-	List<Record> getRank();
+	List<Record> getTop();
 
 }

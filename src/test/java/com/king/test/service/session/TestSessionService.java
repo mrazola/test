@@ -57,7 +57,7 @@ public class TestSessionService {
     	cache.put("foo", new Session(1, Clock.offset(mockedClock, Duration.ofMinutes(10)).millis()));
     	cache.put("foo2", new Session(2, Clock.offset(mockedClock, Duration.ofMinutes(10)).millis()));
     	// make them expire
-    	mockedClock.speedUpBy(Duration.ofMinutes(11));
+    	mockedClock.speedUpBy(Duration.ofMinutes(10));
     	// but since there's no bg thread to release them, size should be still 2
     	Assert.assertEquals(2, cache.size());
     	// on insert, cleanup process should clean 2 of them
