@@ -1,5 +1,6 @@
 package com.king.test.service.score;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -35,7 +36,8 @@ public class ScoreServiceMemoryImpl implements ScoreService {
 
     @Override
     public List<Record> getHighScoreList(Integer level) {
-        return scoresByLevel.get(level).getTop();
+    	Ranking ranking = scoresByLevel.get(level);
+        return ranking == null ? Collections.emptyList() : ranking.getTop();
     }
 
 }

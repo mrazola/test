@@ -43,7 +43,18 @@ public class TestRequestDispatcher {
 		String result = realDispatcher.handle(highscore).get();
 		
 		Assert.assertEquals("3=1500,1=1200,2=1100", result);
-
+	}
+	
+	@Test
+	public void testEmptyHighScores() {
+		ClientRequest highscoreEmpty = ClientRequest.builder()
+				.withAction("highscorelist")
+				.withId(12)
+				.build();
+		
+		String resultEmpty = realDispatcher.handle(highscoreEmpty).get();
+		
+		Assert.assertEquals("", resultEmpty);
 	}
 	
 	@Test
