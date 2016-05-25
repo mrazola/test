@@ -3,21 +3,17 @@ package com.king.test.service.session;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
- * TODO Comment
+ * A {@code SessionService} implementation backed by a {@code SessionCache}
+ * and providing {@code UUID} as sessionkeys.
  *
  */
 public class SessionServiceCacheImpl implements SessionService {
 	
-    private static final Duration DEFAULT_TTL = Duration.ofMinutes(10);
-    
     private final Clock clock;
     private final Map<String, Session> cache;
     
@@ -32,7 +28,7 @@ public class SessionServiceCacheImpl implements SessionService {
     
     @Override
     public String login(Integer uid) {
-        return this.login(uid, DEFAULT_TTL);
+        return this.login(uid, SessionService.DEFAULT_TTL);
     }
 
     /**

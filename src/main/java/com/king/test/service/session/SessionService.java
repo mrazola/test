@@ -1,5 +1,6 @@
 package com.king.test.service.session;
 
+import java.time.Duration;
 import java.util.Optional;
 
 /**
@@ -8,7 +9,9 @@ import java.util.Optional;
  */
 public interface SessionService {
     
-    /**
+	public static final Duration DEFAULT_TTL = Duration.ofMinutes(10);
+    
+	/**
      * 
      * @return the session key
      */

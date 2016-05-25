@@ -1,10 +1,10 @@
 package com.king.test.service.ranking;
 
 /**
- * Entity that holds a user id and her score
+ * Entity that holds a user id and her score.
  *
  */
-public class Record {
+public class Record implements Comparable<Record> {
 
     public final Integer uid;
     public final Integer score;
@@ -27,6 +27,10 @@ public class Record {
         StringBuilder builder = new StringBuilder();
         return builder.append(uid).append('=').append(score).toString();
     }
-    
+
+	@Override
+	public int compareTo(Record another) {
+		return this.score.compareTo(another.score);
+	}
     
 }

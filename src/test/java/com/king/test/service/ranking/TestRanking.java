@@ -3,12 +3,7 @@ package com.king.test.service.ranking;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-
-import com.king.test.service.ranking.Ranking;
-import com.king.test.service.ranking.RankingLinkedListImpl;
-import com.king.test.service.ranking.Record;
 
 /**
  * Unit tests for {@code Ranking}
@@ -28,15 +23,15 @@ public class TestRanking {
 
         Assert.assertEquals(size, ranking.getTop().size());
 
-        // insert a record with lower score than current
+        // insert a record with lower score than current, and check size doesn't increase
         ranking.insertScore(new Record(7, 900));
         Assert.assertEquals(size, ranking.getTop().size());
 
-        // insert a record that would replace current lowest
+        // now insert a record that would replace current lowest
         ranking.insertScore(new Record(7, 1100));
         Assert.assertEquals(size, ranking.getTop().size());
 
-        // insert a record that would replace current highest
+        // and finally insert a record that would replace current highest
         ranking.insertScore(new Record(7, 3000));
         Assert.assertEquals(size, ranking.getTop().size());
     }
