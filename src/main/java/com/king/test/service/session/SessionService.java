@@ -14,6 +14,11 @@ public interface SessionService {
      */
     public String login(Integer uid);
     
+    /**
+     * 
+     * @param sessionKey
+     * @return a valid {@code Session} if still active, or empty if not
+     */
     public Optional<Session> getSession(String sessionKey);
     
 }

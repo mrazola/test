@@ -15,7 +15,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 /**
- * TODO Comment
+ * Front controller for http requests.
  *
  */
 public class RequestDispatcher implements HttpHandler {

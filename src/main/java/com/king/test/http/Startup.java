@@ -1,18 +1,17 @@
-package com.king.test;
+package com.king.test.http;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import com.king.test.http.RequestDispatcher;
 import com.king.test.service.score.ScoreService;
 import com.king.test.service.score.ScoreServiceMemoryImpl;
-import com.king.test.service.session.InMemoryCacheSessionService;
+import com.king.test.service.session.SessionServiceCacheImpl;
 import com.king.test.service.session.SessionService;
 import com.sun.net.httpserver.HttpServer;
 
 /**
- * TODO Comment
+ * Main class to start {@code HttpServer}
  * 
  */
 public class Startup {
@@ -21,7 +20,7 @@ public class Startup {
         
         try {
             final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-            SessionService sessionService = new InMemoryCacheSessionService();
+            SessionService sessionService = new SessionServiceCacheImpl();
             ScoreService scoreService = new ScoreServiceMemoryImpl();
             
             server.createContext("/", new RequestDispatcher(sessionService, scoreService));
@@ -33,6 +32,7 @@ public class Startup {
         } catch (IOException e) {
             System.err.println("Could not start game scores server: " + e.getMessage());
         }
+        
     }
 
 }
