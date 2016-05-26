@@ -8,12 +8,12 @@ import java.util.Map.Entry;
 /**
  * {@code LinkedHashMap} implementation that overrides <pre>removeEldestEntry</pre>, and
  * orders elements by access time, to be used as an LRU cache.
- *
+ * 
  */
 public class SessionCache extends LinkedHashMap<String, Session> {
 
 	private static final long serialVersionUID = 7285924038185349796L;
-	private static final int DEFAULT_MAX_CAPACITY = 64000;
+	private static final int DEFAULT_MAX_CAPACITY = 2000000;
 	public static final int DEFAULT_CLEANUP_KEYS = 16;
     private static final int INITIAL_CAPACITY = 32;
     private static final float LOAD_FACTOR = 0.75f;
