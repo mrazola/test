@@ -13,9 +13,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * This implementation is suitable when ranking size is limited, and max size is small.
  * Ranking limit defaults to {@link RankingLinkedListImpl#DEFAULT_MAX_SIZE}.
  * 
- * The ranking is backed by a LinkedList; the algorithm only iterates the list once, and
- * only if the score to be inserted is greater than current minimum.
- * It also tries to provide a higher throughput by using a {@code ReadWriteLock}.
+ * The ranking is backed by a {@code LinkedList}; when inserting, the algorithm only iterates the list once,
+ * and only if the score to be inserted is greater than current minimum.
+ * It also tries to provide a higher throughput by using a {@code ReadWriteLock} to manage concurrent access
+ * to data structures.
  * 
  * If ranking is not bounded, or limits are high, an alternative (tree-based) implementation 
  * should be chosen instead.
