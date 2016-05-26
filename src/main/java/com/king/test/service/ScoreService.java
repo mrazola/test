@@ -16,7 +16,7 @@ public interface ScoreService {
 	 * @param uid
 	 * @return the sessionkey for the user
 	 */
-	public String login(Integer uid);
+	public String login(Integer uid) throws IllegalArgumentException;
 	
 	/**
 	 * 
@@ -25,7 +25,7 @@ public interface ScoreService {
 	 * @param score
 	 * @throws NoSuchElementException if the corresponding session to sessionkey is not active
 	 */
-    public void insertScore(Integer level, String sessionkey, Integer score) throws NoSuchElementException;
+    public void insertScore(Integer level, String sessionkey, Integer score) throws NoSuchElementException, IllegalArgumentException;
     
     /**
      * 

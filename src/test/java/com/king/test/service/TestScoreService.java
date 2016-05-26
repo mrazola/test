@@ -6,8 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.king.test.service.ScoreService;
-import com.king.test.service.ScoreServiceMemoryImpl;
 import com.king.test.service.ranking.Record;
 import com.king.test.service.session.SessionServiceCacheImpl;
 
@@ -23,6 +21,11 @@ public class TestScoreService {
 	public void setUp() {
 		this.scoreService = new ScoreServiceMemoryImpl(new SessionServiceCacheImpl());
 	}
+	
+    @Test(expected=IllegalArgumentException.class)
+    public void testUidValidation() {
+        scoreService.login(-3);
+    }
 	
     @Test
     public void basicScoreServiceTest() {

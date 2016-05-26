@@ -50,7 +50,7 @@ public class SessionServiceCacheImpl implements SessionService {
         Session session = this.cache.get(sessionKey);
         return session.getExpiration() > clock.millis();
     }
-    
+
     @Override
     public Optional<Integer> getSession(String sessionKey) {
         Session session = this.cache.get(sessionKey);

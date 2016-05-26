@@ -3,7 +3,7 @@ package com.king.test.service.session;
 import java.io.Serializable;
 
 /**
- * TODO Comment
+ * Entity that holds a user id who requested a session, and its expiration time
  *
  * @author mrazola
  * @created 23 May 2016

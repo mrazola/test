@@ -60,8 +60,7 @@ public class MockedHttpExchange extends HttpExchange {
 
     @Override
     public Object getAttribute(String name) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -134,8 +133,7 @@ public class MockedHttpExchange extends HttpExchange {
 
     @Override
     public void setAttribute(String name, Object value) {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override

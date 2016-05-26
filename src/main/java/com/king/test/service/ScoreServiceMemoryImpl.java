@@ -28,13 +28,23 @@ public class ScoreServiceMemoryImpl implements ScoreService {
     
 
 	@Override
-	public String login(Integer uid) {
+	public String login(Integer uid) throws IllegalArgumentException {
+	    if (uid < 0) {
+	        throw new IllegalArgumentException("User id must be a positive integer");
+	    }
 		// just delegate
 		return sessionService.login(uid);
 	}
 
     @Override
-    public void insertScore(final Integer level, String sessionkey, Integer score) throws NoSuchElementException {
+    public void insertScore(final Integer level, String sessionkey, Integer score) throws NoSuchElementException, IllegalArgumentException {
+        
+        if (level < 0) {
+            throw new IllegalArgumentException("Level must be a positive integer");
+        }
+        if (score < 0) {
+            throw new IllegalArgumentException("Score must be a positive integer");
+        }
         
     	Integer uid = sessionService.getSession(sessionkey).orElseThrow(() -> new NoSuchElementException("Session not found"));
         Record record = new Record(uid, score);
