@@ -51,7 +51,7 @@ public class ScoreServiceMemoryImpl implements ScoreService {
         
         Ranking forLevel = null;
         
-        synchronized (scoresByLevel) {
+        synchronized (scoresByLevel) { // FIXME if synchronized at this level, no need for ConcurrentMap
             forLevel = scoresByLevel.get(level);
             if (forLevel == null) {
                 forLevel = new RankingLinkedListImpl();

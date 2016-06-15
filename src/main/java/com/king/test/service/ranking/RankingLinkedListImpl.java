@@ -51,7 +51,7 @@ public class RankingLinkedListImpl implements Ranking {
                 rank.add(record);
                 members.add(record.getUid());
             } else {
-                // only insert if no maxSize reached or score is greater than curernt minimum
+                // only insert if no maxSize reached or score is greater than current minimum
                 if (rank.size() < maxSize || record.getScore() > rank.getLast().getScore()) {
                     
                     if (members.contains(record.getUid())) {
@@ -128,7 +128,7 @@ public class RankingLinkedListImpl implements Ranking {
 	public List<Record> getTop() {
         lock.readLock().lock(); // only lock for reading here
         try {
-            return Collections.unmodifiableList(rank);
+            return Collections.unmodifiableList(rank); // FIXME Return a copy list, or make a copy on write.
         } finally  {
             lock.readLock().unlock();
         }

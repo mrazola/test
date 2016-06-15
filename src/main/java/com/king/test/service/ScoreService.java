@@ -15,6 +15,7 @@ public interface ScoreService {
 	 * 
 	 * @param uid
 	 * @return the sessionkey for the user
+	 * @throws IllegalArgumentException if uid is negative
 	 */
 	public String login(Integer uid) throws IllegalArgumentException;
 	
